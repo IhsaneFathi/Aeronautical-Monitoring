@@ -6,8 +6,6 @@ Prototype de système IoT pour la surveillance en temps réel d'un équipement e
 
 Le projet vise à collecter en temps réel plusieurs grandeurs physiques critiques (température, pression, vibration, énergie), à les traiter pour détecter des anomalies précurseurs de défaillance, et à les transmettre vers une plateforme de visualisation — selon une architecture **Edge → Fog → Cloud**.
 
-Faute de matériel physique disponible (Raspberry Pi) au démarrage du projet, le prototype a été développé et validé sous **Wokwi**, un simulateur de circuits électroniques.
-
 ## Architecture
 
 ```
@@ -26,7 +24,7 @@ Faute de matériel physique disponible (Raspberry Pi) au démarrage du projet, l
         |  Cloud : visualisation et dashboards
 ```
 
-Cette séparation Edge/Fog est volontaire : la couche ESP32 (edge) ne fait **que** de la perception (collecte + filtrage + normalisation), toute la logique de décision (seuils, règles) est déportée dans Node-RED (fog) — ce qui permet de modifier les règles de détection sans reflasher le firmware.
+Cette séparation Edge/Fog est volontaire : la couche ESP32 (edge) ne fait **que** de la perception (collecte + filtrage + normalisation), toute la logique de décision (seuils, règles) est déportée dans Node-RED (fog) ce qui permet de modifier les règles de détection sans reflasher le firmware.
 
 ## Capteurs et grandeurs surveillées
 
@@ -94,5 +92,4 @@ Le projet se poursuit avec l'intégration d'un module de Machine Learning pour l
 
 ## Auteur
 
-Ihsane — Cycle ingénieur Robotique et Objets Connectés, ENIAD Berkane
-Stage technique, YaneCode Digital (Safi)
+Ihsane Fathi — Cycle ingénieur Robotique et Objets Connectés, ENIAD Berkane Stage technique, YaneCode Digital (Safi) Encadrant : Jamal Ettousy
