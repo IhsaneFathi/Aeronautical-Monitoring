@@ -1,0 +1,322 @@
+[
+    {
+        "id": "402a29498d67b2f9",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c175b28a28b4bc90",
+        "type": "mqtt in",
+        "z": "402a29498d67b2f9",
+        "name": "",
+        "topic": "ihsane/iot-phm/mesures",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "f1f763c6323d09a4",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 200,
+        "wires": [
+            [
+                "2680321e20de3306",
+                "809dc8586a1c6754"
+            ]
+        ]
+    },
+    {
+        "id": "2680321e20de3306",
+        "type": "function",
+        "z": "402a29498d67b2f9",
+        "name": "Split mesures",
+        "func": "const now = Date.now();\nconst ANOMALY_THRESHOLD = 0.8;\n\nfunction checkAnomaly(val) {\n  return (typeof val === \"number\" && val >= ANOMALY_THRESHOLD);\n}\n\nconst temp = msg.payload.temp;\nconst pres = msg.payload.pres;\nconst vib = msg.payload.vib;\nconst ener = msg.payload.ener;\n\nreturn [\n  { payload: temp, timestamp: now, anomaly: checkAnomaly(temp) },\n  { payload: pres, timestamp: now, anomaly: checkAnomaly(pres) },\n  { payload: vib, timestamp: now, anomaly: checkAnomaly(vib) },\n  { payload: ener, timestamp: now, anomaly: checkAnomaly(ener) }\n];",
+        "outputs": 4,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 200,
+        "wires": [
+            [
+                "892f50ab2ffdd7fb"
+            ],
+            [
+                "cbbce54cf62c2148"
+            ],
+            [
+                "d89c70bfc8f95f9f"
+            ],
+            [
+                "154dc0ced0781101",
+                "0e003529accf911e"
+            ]
+        ]
+    },
+    {
+        "id": "892f50ab2ffdd7fb",
+        "type": "ui_gauge",
+        "z": "402a29498d67b2f9",
+        "name": "",
+        "group": "31a8c79fe9181307",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Température",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 630,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "cbbce54cf62c2148",
+        "type": "ui_gauge",
+        "z": "402a29498d67b2f9",
+        "name": "",
+        "group": "31a8c79fe9181307",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Pression",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 620,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "d89c70bfc8f95f9f",
+        "type": "ui_gauge",
+        "z": "402a29498d67b2f9",
+        "name": "",
+        "group": "31a8c79fe9181307",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Vibration",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 620,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "154dc0ced0781101",
+        "type": "ui_gauge",
+        "z": "402a29498d67b2f9",
+        "name": "",
+        "group": "31a8c79fe9181307",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Énergie",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "1",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 620,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "0e003529accf911e",
+        "type": "function",
+        "z": "402a29498d67b2f9",
+        "name": "Latence",
+        "func": "if (msg.timestamp === undefined) {\n    node.warn(\"Pas de timestamp reçu !\");\n    msg.payload = \"erreur: pas de timestamp\";\n    return msg;\n}\nmsg.latence_ms = Date.now() - msg.timestamp;\nmsg.payload = msg.latence_ms;\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 280,
+        "wires": [
+            [
+                "6935e8bb1a35ea05"
+            ]
+        ]
+    },
+    {
+        "id": "6935e8bb1a35ea05",
+        "type": "debug",
+        "z": "402a29498d67b2f9",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "809dc8586a1c6754",
+        "type": "function",
+        "z": "402a29498d67b2f9",
+        "name": "Prepare InfluxDB",
+        "func": "msg.payload = {\n  temp: msg.payload.temp,\n  pres: msg.payload.pres,\n  vib: msg.payload.vib,\n  ener: msg.payload.ener\n};\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 60,
+        "wires": [
+            [
+                "f4cce29bf2ecb873"
+            ]
+        ]
+    },
+    {
+        "id": "f4cce29bf2ecb873",
+        "type": "influxdb out",
+        "z": "402a29498d67b2f9",
+        "influxdb": "d92457c044fb3ade",
+        "name": "",
+        "measurement": "mesures_phm",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "organisation",
+        "bucket": "iot-phm",
+        "x": 670,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "f1f763c6323d09a4",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.emqx.io",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "31a8c79fe9181307",
+        "type": "ui_group",
+        "name": "Monitoring PHM",
+        "tab": "469e11a3b9eec943",
+        "order": 1,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "d92457c044fb3ade",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "YaneCode",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "https://us-east-1-1.aws.cloud2.influxdata.com",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "469e11a3b9eec943",
+        "type": "ui_tab",
+        "name": "Dashboard",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "932fafae193836fb",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6",
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
