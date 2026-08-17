@@ -76,10 +76,10 @@ Un nœud dédié mesure également la **latence de traitement** dans Node-RED (d
 ![Node-RED dashboard](screenshots/nodered-dashboard.png)
 
 **Données stockées dans InfluxDB**
-![InfluxDB](screenshots/influxdb-data.png)
+![InfluxDB](screenshots/InfluxDB.png)
 
 **Dashboard Grafana (visualisation historique)**
-![Grafana](screenshots/grafana-dashboard.png)
+![Grafana](screenshots/Grafana.png)
 
 ## Comment reproduire
 
